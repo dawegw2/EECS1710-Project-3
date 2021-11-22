@@ -1,5 +1,4 @@
 class Key {
-  PImage gem;
   PVector position;
   float keySize = 15;
 
@@ -13,7 +12,6 @@ class Key {
 
   Key(float x, float y) {
     position = new PVector(x, y);
-    gem = loadImage("gem.png");
     imageMode(CENTER);
   }
 
@@ -33,12 +31,10 @@ class Key {
       ellipse(position.x, position.y, lightX, lightY);
       
       fill(255, 215, 0);
-      ellipse(position.x, position.y, keySize, keySize);
-      //image(gem, position.x, position.y, artSize, artSize);
-      
+      ellipse(position.x, position.y, keySize, keySize);      
     }
 
-    if (d < 25) {
+    if (d < 25 && numKeysCollected < 3) {
       collectable = true;
       fill(255);
       textSize(25);

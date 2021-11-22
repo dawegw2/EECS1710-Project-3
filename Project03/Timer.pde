@@ -10,10 +10,10 @@ class Timer {
 
   boolean timerStarted = false;
 
-  Timer() {
-    seconds = 0;
+  Timer(int _seconds, int _startTime) {
+    seconds = _seconds;
     minute = 0;
-    startTime = millis();
+    startTime = _startTime; 
     //font = createFont("Arial", 50);
    // textFont(font);
     textAlign(CENTER);
@@ -23,7 +23,7 @@ class Timer {
   void update() {
     fill(127);
     textSize(30);
-    text("Time: " + seconds, width - 125, 30);
+    text("Time: " + seconds, width - 85, 30);
   }
 
   void draw() {

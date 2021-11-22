@@ -8,17 +8,22 @@ ArrayList<Key> keys = new ArrayList<Key>();
 ArrayList<Battery> battery = new ArrayList<Battery>();
 ArrayList<PVector> keySpawnPos, batterySpawnPos; 
 
-int numKeys = 5;
-int numBatteries = 3;
-
 PImage maze, itemSpawnMap;
 PVector reset;
 
+
+int numKeys = 5;
+int numBatteries = 3;
+int s = 0;
+int st = millis();
+
 int dotScaler = 25;
 int threshold = 200;
-float lightSize = 900;
-float lightInc = 50;
 int numKeysCollected = 0;
+int numBattsCollected = 0;
+
+float lightSize = 900;
+float lightInc = 800;
 
 color dotCol = color(255, 0, 0); 
 
@@ -34,12 +39,12 @@ void setup() {
 
   reset = new PVector(width/2, 10);
   player = new Player(reset.x, reset.y, dotCol, reset);
-  timer = new Timer();
+  timer = new Timer(s, st);
   startScreen = new StartPage();
   endScreen = new EndPage();
 
   maze = loadImage("maze2.png");
-  itemSpawnMap = loadImage("artifactmap2.png");
+  itemSpawnMap = loadImage("artifactmap.png");
   itemSpawnMap.loadPixels();
 
   keySpawnPos = new ArrayList<PVector>();
@@ -125,13 +130,18 @@ void draw() {
   //removes the keys out the arraylist once collected 
   for (int i = keys.size()-1; i >= 0; i--) {
     Key k = keys.get(i);
+
+    if (numKeysCollected >= 3) {
+      keys.remove(i);
+    }
     if (k.keySize <= 0 && k.collected && numKeysCollected < 3) {
       keys.remove(i);
       numKeysCollected += 1;
+      numKeys -= 1;
     }
   }
 
-  println(keys.size());
+  //println(keys.size());
 
   for (int i = 0; i < battery.size(); i++) {
     battery.get(i).run();
@@ -141,17 +151,19 @@ void draw() {
     Battery batt = battery.get(i);
     if (batt.battSize <= 0 && batt.collected) {
       battery.remove(i);
+      if (numBatteries < 3) {
+        numBattsCollected += 1;
+      }
+
       if (battery.size() >= 1) {
         lightSize += lightSize*0.75;
       } else {
         lightSize += lightSize*1;
       }
-
-      //if (lightSize  && lightSize < 150 ) {
-      //lightInc += 1;
-      //}
     }
   }
+
+  println(battery.size());
 
   if (gameRunning) {
     //runs the timer once game is ready to play
@@ -159,8 +171,8 @@ void draw() {
     move = true;
     fill(127);
     textSize(30);
-    text("Keys: " + numKeysCollected + "/3", width - 125, 65);
-    
+    text("Keys: " + numKeysCollected + "/3", width - 68, 65);
+
     fill(255, 215, 0);
     ellipse(10, 10, 15, 15);
     fill(169, 255, 0);
@@ -206,13 +218,26 @@ void mousePressed() {
     gameOver = false;
     startMenu = true;
 
+    hitWall = false;
+    move = false;
+    keysCollected = false;
+
+
+
+    numKeys = 5;
+    numBatteries = 3;
+
     dotScaler = 25;
     threshold = 200;
     lightSize = 900;
+    lightInc = 800;
+    numKeysCollected = 0;
+    s = 0;
+    st = millis();
 
     dotCol = color(255, 0, 0); 
 
-    //setup();
+    setup();
     loop();
   }
 }
