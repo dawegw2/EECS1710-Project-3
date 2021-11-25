@@ -1,3 +1,6 @@
+import processing.sound.*;
+SoundFile swoosh, keyNoise;
+
 Player player;
 Timer timer;
 StartPage startScreen;
@@ -11,7 +14,6 @@ ArrayList<PVector> keySpawnPos, batterySpawnPos;
 PImage maze, itemSpawnMap;
 PVector reset;
 
-
 int numKeys = 5;
 int numBatteries = 3;
 int s = 0;
@@ -23,7 +25,7 @@ int numKeysCollected = 0;
 int numBattsCollected = 0;
 
 float lightSize = 900;
-float lightInc = 800;
+float lightInc = 60;
 
 color dotCol = color(255, 0, 0); 
 
@@ -46,6 +48,9 @@ void setup() {
   maze = loadImage("maze2.png");
   itemSpawnMap = loadImage("artifactmap.png");
   itemSpawnMap.loadPixels();
+  
+  swoosh = new SoundFile(this, "swoosh.wav");
+  keyNoise = new SoundFile(this, "keys.wav");
 
   keySpawnPos = new ArrayList<PVector>();
   batterySpawnPos = new ArrayList<PVector>();
@@ -135,6 +140,7 @@ void draw() {
       keys.remove(i);
     }
     if (k.keySize <= 0 && k.collected && numKeysCollected < 3) {
+      keyNoise.play();
       keys.remove(i);
       numKeysCollected += 1;
       numKeys -= 1;
@@ -149,17 +155,19 @@ void draw() {
 
   for (int i = battery.size()-1; i >= 0; i--) {
     Battery batt = battery.get(i);
-    if (batt.battSize <= 0 && batt.collected) {
+    if (batt.battSize <= 0 && batt.collected) { //numBatteries == 3
       battery.remove(i);
-      if (numBatteries < 3) {
-        numBattsCollected += 1;
-      }
-
+      //numBattsCollected += 1;
       if (battery.size() >= 1) {
-        lightSize += lightSize*0.75;
+        lightSize += lightSize*0.50;
       } else {
-        lightSize += lightSize*1;
+        lightSize += lightSize*0.75;
       }
+    }
+
+    if (numKeysCollected == 3) {
+      //lightSize += 50;
+      battery.remove(i);
     }
   }
 
@@ -222,15 +230,13 @@ void mousePressed() {
     move = false;
     keysCollected = false;
 
-
-
     numKeys = 5;
     numBatteries = 3;
 
     dotScaler = 25;
     threshold = 200;
     lightSize = 900;
-    lightInc = 800;
+    lightInc = 60;
     numKeysCollected = 0;
     s = 0;
     st = millis();
