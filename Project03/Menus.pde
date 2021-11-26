@@ -1,7 +1,7 @@
 class StartPage {
   PFont font;
-  String message = ("Collect 3 Keys to Escape");
-  String message2 = ("Left Mouse Button to move");
+  String message = ("Collect 3 Keys and Escape the Maze");
+  String message2 = ("Right Mouse Button to move");
   String message3 = ("click anywhere to begin");
 
   StartPage() {
@@ -14,9 +14,9 @@ class StartPage {
     fill(255);
     font = createFont("Arial", 100);
     textFont(font);
-    textSize(30);
-    text(message, width/2, height - 200);
     if (lightSize <= lightInc) {
+      textSize(30);
+      text(message, width/2, height - 200);
       textSize(20);
       text(message2, width/2, height - 150);
       text(message3, width/2, height - 100);
@@ -28,7 +28,6 @@ class StartPage {
   }
 } 
 
-
 class EndPage {
   PFont messagefont;
   String message = ("CONGRAGULATIONS!");
@@ -38,14 +37,12 @@ class EndPage {
   int time;
 
   EndPage() {
-    //score = _score;
   }
 
   void display(int _time) {
 
     time = _time;
     fill(255);
-    //messagefont = createFont("Arial", 25);
     textSize(50);
     text(message, width/2, height/2);
 

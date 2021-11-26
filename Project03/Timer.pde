@@ -14,11 +14,8 @@ class Timer {
     seconds = _seconds;
     minute = 0;
     startTime = _startTime; 
-    //font = createFont("Arial", 50);
-   // textFont(font);
     textAlign(CENTER);
   }
-
 
   void update() {
     fill(127);

@@ -1,16 +1,9 @@
 class Battery {
-
   PVector position;
   float battSize = 15;
 
-  float lightX = 75;
-  float lightY = 75;
-  float shineAmount = 75;
-  float shineIncrement = 1;
-
   boolean collected = false;
   boolean collectable = false;
-
 
   Battery(float x, float y) {
     position = new PVector(x, y);
@@ -18,23 +11,18 @@ class Battery {
 
   void update() {
     if (collected) {
+      //shrinks size when collected
       if (battSize > 0) {
         battSize = battSize - 1;
       }
     }
   }
 
-
   void draw() {
     float d = dist(position.x, position.y, player.position.x, player.position.y);
     if (d < lightSize) {
-      //fill(255, 255, 255, shineAmount);
-     // noStroke();
-     // ellipse(position.x, position.y, lightX, lightY);
-
       fill(169, 255, 0);
-      ellipse(position.x, position.y, battSize, battSize);
-      //image(gem, position.x, position.y, artSize, artSize);
+      ellipse(position.x, position.y, battSize, battSize);      
     }
 
     if (d < 25) {
@@ -51,10 +39,8 @@ class Battery {
     } else {
       collectable = false;
     }
-    //println(collectable);
   }
-
-
+  
   void run() {
     update();
     draw();

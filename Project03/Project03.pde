@@ -1,5 +1,5 @@
 import processing.sound.*;
-SoundFile swoosh, keyNoise;
+SoundFile click, keyNoise, gameMusic;
 
 Player player;
 Timer timer;
@@ -45,12 +45,15 @@ void setup() {
   startScreen = new StartPage();
   endScreen = new EndPage();
 
-  maze = loadImage("maze2.png");
+  maze = loadImage("maze.png");
   itemSpawnMap = loadImage("artifactmap.png");
   itemSpawnMap.loadPixels();
-  
-  swoosh = new SoundFile(this, "swoosh.wav");
-  keyNoise = new SoundFile(this, "keys.wav");
+
+  click = new SoundFile(this, "sound/click.wav");
+  keyNoise = new SoundFile(this, "sound/keys.wav");
+  gameMusic = new SoundFile(this, "sound/gamemusic.wav");
+
+  gameMusic.loop();
 
   keySpawnPos = new ArrayList<PVector>();
   batterySpawnPos = new ArrayList<PVector>();
@@ -149,13 +152,16 @@ void draw() {
 
   //println(keys.size());
 
+  //spawn batteries
   for (int i = 0; i < battery.size(); i++) {
     battery.get(i).run();
   }
 
+  //removes the batteries out the arraylist once collected 
   for (int i = battery.size()-1; i >= 0; i--) {
     Battery batt = battery.get(i);
     if (batt.battSize <= 0 && batt.collected) { //numBatteries == 3
+      click.play();
       battery.remove(i);
       //numBattsCollected += 1;
       if (battery.size() >= 1) {
@@ -171,12 +177,15 @@ void draw() {
     }
   }
 
-  println(battery.size());
-
   if (gameRunning) {
     //runs the timer once game is ready to play
     timer.run();
     move = true;
+    if (numKeysCollected == 3) {
+      fill(127);
+      textSize(20);
+      text("Now find the Exit", width - 90, height - 20);
+    }
     fill(127);
     textSize(30);
     text("Keys: " + numKeysCollected + "/3", width - 68, 65);
@@ -185,6 +194,7 @@ void draw() {
     ellipse(10, 10, 15, 15);
     fill(169, 255, 0);
     ellipse(10, 30, 15, 15);
+
     fill(127);
     textSize(15);
     text(" : Key", 38, 15);
@@ -194,23 +204,24 @@ void draw() {
       lightSize = lightSize - 3;
     }
   }
-
+  //start screens
   if (startMenu) {
     startScreen.screen();
     startScreen.display();
   }
-
+  //end screen
   if (player.escaped && numKeysCollected >= 3) {
     //gameRunning = false; 
     endScreen.display(timer.seconds);
+    gameMusic.stop();
   }
-
 
   surface.setTitle("" + frameRate);
 }
 
+//controls
 void mousePressed() {
-  if (mouseButton == LEFT) {
+  if (mouseButton == RIGHT) {
     if (move) {
       player.target = new PVector(mouseX, mouseY);
     }
@@ -219,6 +230,7 @@ void mousePressed() {
   if (!gameRunning && lightSize <= lightInc) {
     gameRunning = true;
     startMenu = false;
+    gameMusic.loop();
   }
 
   if (gameOver) {

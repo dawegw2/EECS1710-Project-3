@@ -17,6 +17,7 @@ class Key {
 
   void update() {
     if (collected) {
+      //shrinks key when collected
       if (keySize > 0) {
         keySize = keySize - 1;
       }
@@ -51,7 +52,6 @@ class Key {
     //println(collectable);
   }
 
-
   void sunLight() { //code taken from my excersise 2
     if (lightX != -25) { //expands the emitted light when the width is not -220
       lightX = lightX + 1;
@@ -68,6 +68,7 @@ class Key {
       shineIncrement = -1;
     }
   }
+  
   void run() {
     update();
     sunLight();
