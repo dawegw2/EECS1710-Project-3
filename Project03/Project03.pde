@@ -6,7 +6,6 @@ Timer timer;
 StartPage startScreen;
 EndPage endScreen;
 
-ArrayList<Dot> dots;
 ArrayList<Key> keys = new ArrayList<Key>();
 ArrayList<Battery> battery = new ArrayList<Battery>();
 ArrayList<PVector> keySpawnPos, batterySpawnPos; 
@@ -19,7 +18,6 @@ int numBatteries = 3;
 int s = 0;
 int st = millis();
 
-int dotScaler = 25;
 int threshold = 200;
 int numKeysCollected = 0;
 int numBattsCollected = 0;
@@ -98,21 +96,10 @@ void draw() {
       float gMaze = green(maze.pixels[index]);
       float bMaze = blue(maze.pixels[index]);
 
-      float rKey = red(itemSpawnMap.pixels[index]);
-      float gKey = green(itemSpawnMap.pixels[index]);
-      float bKey = blue(itemSpawnMap.pixels[index]);
-
-      color colKey = itemSpawnMap.pixels[index];
-
       float d = dist(player.position.x, player.position.y, x, y);
       float factor = map(d, 0, lightSize, 5, 0);
 
       pixels[index] = color(rMaze*factor, gMaze*factor, bMaze*factor);
-
-      if (blue(colKey) > 200) {
-        //pixels[index] = color(0, gArt*factor, 0);
-      }
-      //dots.add(new Dot(x, y, maze.pixels[index]));
     }
   }
   updatePixels();
@@ -245,7 +232,6 @@ void mousePressed() {
     numKeys = 5;
     numBatteries = 3;
 
-    dotScaler = 25;
     threshold = 200;
     lightSize = 900;
     lightInc = 60;
