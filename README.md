@@ -17,7 +17,9 @@ In the setup function, I use a pixel array to access the red and blue pixels fro
 The flashlight effect is done by manipulating the pixel array as well.
 
 Assets:
+
 The maze was generated using: https://keesiemeijer.github.io/maze-generator/
 
 References:
+
 For maze wall collisions: https://github.com/eecs17xx/eecs1710-2021f/tree/main/Week10/PixelExample06
