@@ -23,3 +23,4 @@ The maze was generated using: https://keesiemeijer.github.io/maze-generator/
 References:
 
 For maze wall collisions: https://github.com/eecs17xx/eecs1710-2021f/tree/main/Week10/PixelExample06
+For mapping spawn points: https://github.com/eecs17xx/eecs1710-2021f/tree/main/Week10/ClockCreature02
